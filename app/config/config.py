@@ -568,10 +568,26 @@ ui = _SynchronizedConfig(
 )
 
 hostname = socket.gethostname()
-
 log_level = _cfg.get("log_level", "DEBUG")
 listen_host = _cfg.get("listen_host", "0.0.0.0")
 listen_port = _cfg.get("listen_port", 8080)
+environment = os.getenv(
+    "MPT_ENVIRONMENT", _cfg.get("environment", "development")
+).strip().lower()
+if environment not in {"development", "production", "test"}:
+    raise RuntimeError(
+        "MPT_ENVIRONMENT must be one of: development, production, test"
+    )
+# Secrets supplied by the environment take precedence over config.toml. This
+# keeps production credentials out of bind-mounted configuration and source
+# control while retaining the existing local-development workflow.
+environment_api_key = os.getenv("MPT_API_KEY")
+if environment_api_key is not None:
+    app["api_key"] = environment_api_key
+if environment == "production" and not str(app.get("api_key", "")).strip():
+    raise RuntimeError(
+        "MPT_API_KEY or [app].api_key must be configured in production"
+    )
 project_name = _cfg.get("project_name", "MoneyPrinterTurbo")
 project_description = _cfg.get(
     "project_description",
