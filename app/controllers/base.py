@@ -26,52 +26,66 @@ def get_task_id(request: Request) -> str:
     return normalize_task_id(request.headers.get("x-task-id"))
 
 
-def get_api_key(request: Request):
-    api_key = request.headers.get("x-api-key")
-    return api_key
+def get_api_key(request: Request) -> str | None:
+    """Return the legacy X-API-Key header, if present."""
+    value = request.headers.get("x-api-key")
+    return value if isinstance(value, str) else None
+
+
+def _header_values(request: Request, name: str) -> list[str]:
+    """Return every value for a header, preserving duplicates for safe rejection."""
+    get_list = getattr(request.headers, "getlist", None)
+    if callable(get_list):
+        return [value for value in get_list(name) if isinstance(value, str)]
+    value = request.headers.get(name)
+    return [value] if isinstance(value, str) else []
 
 
 def get_api_key_values(request: Request) -> list[str]:
-    """返回请求中全部 API Key Header，保留重复值用于安全校验。"""
+    """Extract exactly one API key from X-API-Key or Bearer Authorization.
 
-    # Starlette Headers 提供 getlist()，可以区分代理或客户端发送的重复 Header。
-    # 单元测试中的轻量 Request 替身只使用普通 dict，因此保留兼容回退。
-    get_list = getattr(request.headers, "getlist", None)
-    if callable(get_list):
-        return [value for value in get_list("x-api-key") if isinstance(value, str)]
-
-    api_key = get_api_key(request)
-    return [api_key] if isinstance(api_key, str) else []
+    Multiple values, or sending both header forms, are intentionally preserved and
+    rejected by ``verify_token`` instead of relying on proxy/client header ordering.
+    """
+    values = _header_values(request, "x-api-key")
+    authorization_values = _header_values(request, "authorization")
+    for authorization in authorization_values:
+        scheme, separator, credentials = authorization.partition(" ")
+        if not separator or scheme.lower() != "bearer" or not credentials.strip():
+            values.append("")
+        else:
+            values.append(credentials.strip())
+    return values
 
 
 def verify_token(
     request: Request,
     x_api_key: Annotated[str | None, Header(alias="x-api-key")] = None,
 ):
-    """按配置决定是否校验 API Key。
+    """Verify the configured API key using constant-time comparison.
 
-    空 Key 保留现有的本地免认证模式；管理员显式配置非空 Key 后，API
-    路由和任务产物下载都会要求客户端通过 ``x-api-key`` 请求头提供同一
-    个值。参数声明同时让 Swagger 展示该请求头，便于受保护环境调试。
+    An empty key is allowed only for the explicit development mode. Production
+    startup fails in ``app.config`` when no key is configured, so accidentally
+    exposing the API without authentication is prevented at the deployment layer.
     """
-
     configured_key = config.app.get("api_key", "")
-    if configured_key in (None, ""):
-        return None
-
-    # 配置项必须是字符串。这里拒绝列表、数字等错误类型，避免字符串隐式
-    # 转换产生难以发现的认证行为；错误信息也不包含实际 Key。
     if not isinstance(configured_key, str):
         raise HttpException(
             task_id=get_task_id(request),
             status_code=500,
             message="API authentication is misconfigured",
         )
+    if not configured_key:
+        if getattr(config, "environment", "development") == "production":
+            raise HttpException(
+                task_id=get_task_id(request),
+                status_code=500,
+                message="API authentication is misconfigured",
+            )
+        return None
 
-    # FastAPI 参数用于在 OpenAPI 中声明 x-api-key；实际校验始终读取 Request，
-    # 才能识别同名 Header 被重复发送的情况。普通客户端和反向代理对重复 Header
-    # 的取值顺序可能不同，因此必须拒绝，而不能隐式采用第一个或最后一个值。
     token_values = get_api_key_values(request)
+    # Keep compatibility with lightweight Request substitutes used by callers/tests.
     if not token_values and isinstance(x_api_key, str):
         token_values = [x_api_key]
 
@@ -82,11 +96,8 @@ def verify_token(
             message="invalid API key",
         )
 
-    # compare_digest 对 str 只支持 ASCII。请求 Header 属于不可信输入，攻击者
-    # 可以发送 Latin-1 字符触发 TypeError。统一编码为 UTF-8 bytes 后既保留
-    # 恒定时间比较，也支持 TOML 中合法的 Unicode Key。
     token = token_values[0]
-    if not secrets.compare_digest(
+    if not token or not secrets.compare_digest(
         token.encode("utf-8"), configured_key.encode("utf-8")
     ):
         raise HttpException(
