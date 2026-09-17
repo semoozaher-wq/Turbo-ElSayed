@@ -1,0 +1,28 @@
+# ==========================================
+# إعدادات جديدة لنظام "الأفلام والشخصيات الثابتة"
+# ==========================================
+
+[video_generation]
+# نوع توليد الصور (midjourney, stable_diffusion, dall_e_3)
+image_provider = "midjourney" 
+# API Key الخاص بـ Midjourney (أو أي أداة تانية)
+image_api_key = "YOUR_MIDJOURNEY_API_KEY_HERE"
+# رابط الصورة المرجعية للشخصية (Character Reference URL)
+# ملاحظة: هتحتاج ترفع صورة الشخصية على سيرفر وتجي الرابط هنا
+character_reference_url = "https://example.com/character_image.png"
+# نسبة الثبات (0.1-1.0)
+character_strength = 0.8
+
+# نوع توليد الفيديو (kling, runway, luma)
+video_provider = "kling"
+video_api_key = "YOUR_KLING_API_KEY_HERE"
+# مدة الفيديو بالثواني لكل مشهد
+scene_duration = 5
+
+[character_manager]
+# ملف JSON يحتوي على قائمة الشخصيات (id, name, url)
+characters_file = "assets/characters.json"
+
+[app]
+# تفعيل وضع "الفيلم الطويل" (بدل وضع الفيديو القصير العشوائي)
+movie_mode = true
