@@ -1,0 +1,16 @@
+{
+  "characters": [
+    {
+      "id": "cat_hero",
+      "name": "بطل القصة",
+      "description": "قط برتقالي يرتدي سترة جلدية حمراء",
+      "reference_url": "https://example.com/cat_hero.png"
+    },
+    {
+      "id": "dog_villain",
+      "name": "الشرير",
+      "description": "كلب كبير يرتدي بدلة سوداء",
+      "reference_url": "https://example.com/dog_villain.png"
+    }
+  ]
+}
