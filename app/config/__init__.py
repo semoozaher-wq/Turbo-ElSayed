@@ -1,7 +1,10 @@
 import sys
 
-from app.config import config
+from app.config.config import Config
 from app.utils.logging_utils import configure_terminal_logger
+
+
+config = Config()
 
 
 def __init_logger():
