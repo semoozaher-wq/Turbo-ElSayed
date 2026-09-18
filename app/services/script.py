@@ -323,26 +323,40 @@ Keep character names, appearance, personality, and continuity notes consistent i
     def _normalize_character(item: Any, index: int) -> dict[str, Any]:
         item = item if isinstance(item, Mapping) else {}
         name = str(item.get("name") or f"Character {index + 1}")
-        return {
+        # Keep accepting the original compact schema while exposing a complete,
+        # stable character profile to the prompt and generated scenarios.
+        description = str(item.get("description") or "").strip()
+        appearance = str(item.get("appearance") or description or "as established in the first scene")
+        result = {
             "id": str(item.get("id") or re.sub(r"\W+", "-", name.lower()).strip("-") or f"character-{index + 1}"),
             "name": name,
             "age": str(item.get("age") or "adult"),
             "role": str(item.get("role") or "supporting character"),
             "personality": str(item.get("personality") or "consistent and believable"),
-            "appearance": str(item.get("appearance") or "as established in the first scene"),
+            "appearance": appearance,
             "continuity_notes": str(item.get("continuity_notes") or "Keep appearance and personality unchanged."),
         }
+        # Preserve optional reference media for downstream image/video tools.
+        reference_url = str(item.get("reference_url") or "").strip()
+        if reference_url:
+            result["reference_url"] = reference_url
+        return result
 
     @staticmethod
     def _merge_characters(
         fixed: list[dict[str, Any]], generated: list[dict[str, Any]]
     ) -> list[dict[str, Any]]:
         merged = [MovieScenarioGenerator._normalize_character(item, i) for i, item in enumerate(fixed)]
-        existing = {item["name"].casefold() for item in merged}
+        existing = {
+            key
+            for item in merged
+            for key in (item["id"].casefold(), item["name"].casefold())
+        }
         for item in generated:
-            if item["name"].casefold() not in existing:
+            keys = {item["id"].casefold(), item["name"].casefold()}
+            if not keys & existing:
                 merged.append(item)
-                existing.add(item["name"].casefold())
+                existing.update(keys)
         return merged
 
     @staticmethod
