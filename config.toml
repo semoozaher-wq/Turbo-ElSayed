@@ -1,28 +1,116 @@
-# ==========================================
-# إعدادات جديدة لنظام "الأفلام والشخصيات الثابتة"
-# ==========================================
+# Turbo ElSayed - standalone application configuration
+# Keep real credentials in environment variables or a private local copy.
 
-[video_generation]
-# نوع توليد الصور (midjourney, stable_diffusion, dall_e_3)
-image_provider = "midjourney" 
-# API Key الخاص بـ Midjourney (أو أي أداة تانية)
-image_api_key = "YOUR_MIDJOURNEY_API_KEY_HERE"
-# رابط الصورة المرجعية للشخصية (Character Reference URL)
-# ملاحظة: هتحتاج ترفع صورة الشخصية على سيرفر وتجي الرابط هنا
-character_reference_url = "https://example.com/character_image.png"
-# نسبة الثبات (0.1-1.0)
-character_strength = 0.8
-
-# نوع توليد الفيديو (kling, runway, luma)
-video_provider = "kling"
-video_api_key = "YOUR_KLING_API_KEY_HERE"
-# مدة الفيديو بالثواني لكل مشهد
-scene_duration = 5
-
-[character_manager]
-# ملف JSON يحتوي على قائمة الشخصيات (id, name, url)
-characters_file = "assets/characters.json"
+# -----------------------------------------------------------------------------
+# Application server
+# -----------------------------------------------------------------------------
+log_level = "INFO"
+listen_host = "0.0.0.0"
+listen_port = 8501
+reload_debug = false
+project_name = "Turbo ElSayed"
+project_version = "1.0.0"
+project_description = "Standalone Arabic movie and scenario generator"
 
 [app]
-# تفعيل وضع "الفيلم الطويل" (بدل وضع الفيديو القصير العشوائي)
+name = "Turbo ElSayed"
+language = "ar"
+output_dir = "output"
 movie_mode = true
+api_key = ""
+
+# -----------------------------------------------------------------------------
+# Scenario generation
+# -----------------------------------------------------------------------------
+[scenario]
+# The standalone app/services/script.py reads these values.
+provider = "openai_compatible"
+model = "gpt-4o-mini"
+base_url = ""
+api_key = ""
+temperature = 0.7
+scene_count = 8
+scene_duration = 5
+output_dir = "output/scenarios"
+characters_file = "characters.json"
+
+# -----------------------------------------------------------------------------
+# OpenAI-compatible provider
+# Leave these empty to use OPENAI_API_KEY and OPENAI_BASE_URL instead.
+# -----------------------------------------------------------------------------
+[llm]
+provider = "openai_compatible"
+api_key = ""
+base_url = ""
+model = "gpt-4o-mini"
+
+# -----------------------------------------------------------------------------
+# Character continuity
+# -----------------------------------------------------------------------------
+[character_manager]
+characters_file = "characters.json"
+character_strength = 0.8
+
+# -----------------------------------------------------------------------------
+# Optional image and video generation settings
+# These values are metadata for the application; generation requires a provider
+# implementation and valid credentials.
+# -----------------------------------------------------------------------------
+[video_generation]
+image_provider = "none"
+image_api_key = ""
+character_reference_url = ""
+video_provider = "none"
+video_api_key = ""
+scene_duration = 5
+aspect_ratio = "16:9"
+resolution = "1080p"
+
+# -----------------------------------------------------------------------------
+# Optional subtitle and voice settings
+# -----------------------------------------------------------------------------
+[subtitle]
+provider = "none"
+model_size = "large-v3-turbo"
+language = "ar"
+
+[voice]
+provider = "none"
+api_key = ""
+region = ""
+voice_id = ""
+
+# -----------------------------------------------------------------------------
+# Optional network/proxy settings
+# -----------------------------------------------------------------------------
+[proxy]
+enabled = false
+http = ""
+https = ""
+verify_tls = true
+
+# -----------------------------------------------------------------------------
+# Web UI preferences
+# -----------------------------------------------------------------------------
+[ui]
+language = "ar"
+hide_config = false
+show_logs = true
+
+# -----------------------------------------------------------------------------
+# Storage
+# -----------------------------------------------------------------------------
+[storage]
+output_dir = "output"
+scenarios_dir = "output/scenarios"
+logs_dir = "output/logs"
+temporary_dir = "output/tmp"
+
+# -----------------------------------------------------------------------------
+# Environment-variable equivalents
+# -----------------------------------------------------------------------------
+# OPENAI_API_KEY=your_key_here
+# OPENAI_BASE_URL=https://api.openai.com/v1
+# SCENARIO_MODEL=gpt-4o-mini
+# SCENARIO_OUTPUT_DIR=output/scenarios
+# CHARACTERS_FILE=characters.json
