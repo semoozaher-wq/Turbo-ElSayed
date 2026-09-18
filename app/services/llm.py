@@ -81,6 +81,41 @@ CLAUDE_CODE_PRESERVED_ENV_VARS = (
 )
 
 
+def _runtime_app_config(app_config=None) -> dict:
+    """Merge the new standalone config sections into the legacy app view.
+
+    The Web UI can still pass an app snapshot for a single generation. When it
+    does not contain provider credentials, fall back to the standalone ``[llm]``
+    and ``[scenario]`` sections so the service no longer depends on flattened
+    legacy keys being manually duplicated in ``[app]``.
+    """
+    values = dict(app_config if app_config is not None else config.app)
+    llm_section = getattr(config, "llm", {})
+    scenario_section = getattr(config, "scenario", {})
+    provider_id = str(
+        values.get("llm_provider")
+        or llm_section.get("provider", "openai")
+    ).strip().lower()
+    if provider_id == "openai_compatible":
+        provider_id = "openai"
+    values["llm_provider"] = provider_id
+    provider_keys = {
+        "api_key": f"{provider_id}_api_key",
+        "base_url": f"{provider_id}_base_url",
+        "model_name": f"{provider_id}_model_name",
+    }
+    for suffix, flat_key in provider_keys.items():
+        if not values.get(flat_key):
+            fallback = llm_section.get(suffix)
+            if not fallback:
+                fallback = scenario_section.get(
+                    {"api_key": "api_key", "base_url": "base_url", "model_name": "model"}[suffix]
+                )
+            if fallback:
+                values[flat_key] = fallback
+    return values
+
+
 def _is_conflicting_claude_code_env(name: str) -> bool:
     """判断某个环境变量是否会把 CLI 从订阅登录切换到别的鉴权方式。"""
     if name in CLAUDE_CODE_PRESERVED_ENV_VARS:
@@ -259,7 +294,7 @@ def _generate_response(prompt: str, app_config=None) -> str:
         # WebUI 在视频生成期间允许用户准备下一条文案。调用方可以传入提交瞬间
         # 的配置快照，确保模型请求重试期间不会因为后台任务结束并应用新配置，
         # 而切换到另一个 Provider、Base URL 或模型。
-        runtime_app_config = app_config if app_config is not None else config.app
+        runtime_app_config = _runtime_app_config(app_config)
         llm_provider = str(
             runtime_app_config.get("llm_provider", DEFAULT_LLM_PROVIDER_ID)
         ).lower()
