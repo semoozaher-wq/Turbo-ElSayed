@@ -59,6 +59,7 @@ from app.services import (
     voice,
     webui_task,
 )
+from app.services import scenario_api
 from app.services import elevenlabs_music as elevenlabs_music_service
 from app.services import sonilo as sonilo_service
 from app.services import state as sm
@@ -4486,6 +4487,33 @@ def _render_local_script_generation(params):
     with st.spinner(tr("Generating Video Script and Keywords")):
 
         def generate_script_and_terms(app_config_snapshot):
+            if config.app.get("movie_mode", False):
+                scenario = scenario_api.generate_scenario(
+                    params.video_subject,
+                    language=params.video_language or "ar",
+                    theme=config.scenario.get("theme", "Drama"),
+                    scene_count=config.scenario.get("scene_count", 8),
+                    save=True,
+                )
+                script_parts = [scenario.get("logline", "").strip()]
+                terms = []
+                for scene in scenario.get("scenes", []):
+                    action = str(scene.get("action") or "").strip()
+                    visual_prompt = str(scene.get("visual_prompt") or "").strip()
+                    if action:
+                        script_parts.append(action)
+                    for dialogue in scene.get("dialogues", []):
+                        if isinstance(dialogue, dict) and dialogue.get("line"):
+                            script_parts.append(str(dialogue["line"]).strip())
+                    if visual_prompt:
+                        terms.append(visual_prompt)
+                    elif scene.get("location"):
+                        terms.append(str(scene["location"]))
+                script = "\n\n".join(part for part in script_parts if part)
+                if not script:
+                    raise ValueError("scenario generator returned an empty script")
+                return script, terms[:8] or [params.video_subject]
+
             script = llm.generate_script(
                 video_subject=params.video_subject,
                 language=params.video_language,
