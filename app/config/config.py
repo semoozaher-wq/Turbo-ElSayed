@@ -88,6 +88,11 @@ class Config:
     def get(self, section: str, key: str, default: Any = None) -> Any:
         return self._config.get(section, {}).get(key, default)
 
+    @property
+    def log_level(self) -> str:
+        """Return the process log level, with a safe default for custom configs."""
+        return str(self._config.get("log_level", "WARNING")).upper()
+
     # --- دوال مساعدة للأقسام الجديدة (اللي الكود الجديد محتاجها) ---
 
     def get_image_provider(self) -> str:
