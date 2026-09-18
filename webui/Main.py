@@ -18,7 +18,7 @@ from uuid import UUID, uuid4
 import requests
 import streamlit as st
 from loguru import logger
-from streamlit_tour import Tour
+#from streamlit_tour import Tour
 
 # WebUI 作为独立入口运行时，需要让项目根目录优先于第三方依赖，
 # 避免依赖中的同名 app 包遮蔽 MoneyPrinterTurbo 自己的 app 包。
