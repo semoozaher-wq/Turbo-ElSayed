@@ -79,11 +79,12 @@ def _defaults() -> dict[str, Any]:
             "api_key": "",
             "video_source": "local",
             "script_generation_backend": "local",
-            "llm_provider": "openai_compatible",
+            "llm_provider": "gemini",
         },
         "scenario": {
-            "provider": "openai_compatible",
-            "model": "gpt-4o-mini",
+            "provider": "gemini",
+            "language": "ar",
+            "model": "gemini-2.5-flash",
             "base_url": "",
             "api_key": "",
             "temperature": 0.7,
@@ -93,10 +94,10 @@ def _defaults() -> dict[str, Any]:
             "characters_file": "characters.json",
         },
         "llm": {
-            "provider": "openai_compatible",
+            "provider": "gemini",
             "api_key": "",
             "base_url": "",
-            "model": "gpt-4o-mini",
+            "model": "gemini-2.5-flash",
         },
         "character_manager": {
             "characters_file": "characters.json",
