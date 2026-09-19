@@ -19,8 +19,9 @@ movie_mode = true
 api_key = ""
 
 [scenario]
-provider = "openai_compatible"
-model = "gpt-4o-mini"
+provider = "gemini"
+language = "ar"
+model = "gemini-2.5-flash"
 base_url = ""
 api_key = ""
 temperature = 0.7
@@ -30,10 +31,10 @@ output_dir = "output/scenarios"
 characters_file = "characters.json"
 
 [llm]
-provider = "openai_compatible"
+provider = "gemini"
 api_key = ""
 base_url = ""
-model = "gpt-4o-mini"
+model = "gemini-2.5-flash"
 
 [character_manager]
 characters_file = "characters.json"

@@ -24,8 +24,9 @@ api_key = ""
 # -----------------------------------------------------------------------------
 [scenario]
 # The standalone app/services/script.py reads these values.
-provider = "openai_compatible"
-model = "gpt-4o-mini"
+provider = "gemini"
+language = "ar"
+model = "gemini-2.5-flash"
 base_url = ""
 api_key = ""
 temperature = 0.7
@@ -39,10 +40,10 @@ characters_file = "characters.json"
 # Leave these empty to use OPENAI_API_KEY and OPENAI_BASE_URL instead.
 # -----------------------------------------------------------------------------
 [llm]
-provider = "openai_compatible"
+provider = "gemini"
 api_key = ""
 base_url = ""
-model = "gpt-4o-mini"
+model = "gemini-2.5-flash"
 
 # -----------------------------------------------------------------------------
 # Character continuity
