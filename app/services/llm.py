@@ -113,6 +113,10 @@ def _runtime_app_config(app_config=None) -> dict:
                 )
             if fallback:
                 values[flat_key] = fallback
+    if provider_id == "gemini" and not values.get("gemini_api_key"):
+        values["gemini_api_key"] = os.getenv("GEMINI_API_KEY", "") or os.getenv(
+            "GOOGLE_API_KEY", ""
+        )
     return values
 
 

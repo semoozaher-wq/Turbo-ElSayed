@@ -46,6 +46,11 @@ class MovieScenarioGenerator:
     ) -> None:
         self.config = config
         self.client = client
+        self.provider = str(
+            self._setting("provider", default=os.getenv("SCENARIO_PROVIDER", "openai"))
+        ).strip().lower()
+        if self.provider == "openai_compatible":
+            self.provider = "openai"
         self.model = model or self._setting(
             "model",
             default=os.getenv("SCENARIO_MODEL", "gpt-4o-mini"),
@@ -76,7 +81,12 @@ class MovieScenarioGenerator:
     ) -> dict[str, Any]:
         """Generate a complete scenario and optionally save it as JSON."""
         topic = str(topic or "").strip()
-        language = str(language or "ar").strip()
+        language = str(
+            language or self._setting("language", default=os.getenv("SCENARIO_LANGUAGE", "ar"))
+        ).strip().lower()
+        language = {"arabic": "ar", "العربية": "ar", "english": "en"}.get(
+            language, language or "ar"
+        )
         theme = str(theme or "Drama").strip()
         if not topic:
             raise ValueError("topic must not be empty")
@@ -115,6 +125,13 @@ class MovieScenarioGenerator:
         fixed_characters: list[dict[str, Any]],
     ) -> str:
         fixed_json = json.dumps(fixed_characters, ensure_ascii=False, indent=2)
+        output_instruction = (
+            "Write every textual field in Modern Standard Arabic (العربية الفصحى), "
+            "including the title, logline, character details, scene descriptions, "
+            "and all dialogue lines. Keep JSON keys exactly as provided."
+            if language == "ar"
+            else f"Write every textual field in {language}. Keep JSON keys exactly as provided."
+        )
         return f"""You are an experienced screenwriter and visual storyteller.
 Create a complete fictional scenario based on the following brief.
 
@@ -127,6 +144,7 @@ Existing fixed characters (reuse them when present):
 {fixed_json}
 
 Return ONLY valid JSON. Do not wrap it in Markdown fences and do not add commentary.
+{output_instruction}
 Use exactly this structure:
 {{
   "title": "string",
@@ -240,6 +258,8 @@ Keep character names, appearance, personality, and continuity notes consistent i
         return result
 
     def _request(self, prompt: str) -> str:
+        if self.provider in {"gemini", "google", "google_gemini"}:
+            return self._request_gemini(prompt)
         client = self.client or self._create_client()
         response = client.chat.completions.create(
             model=self.model,
@@ -262,6 +282,41 @@ Keep character names, appearance, personality, and continuity notes consistent i
             raise ScenarioGenerationError("The model returned an empty response")
         return str(content)
 
+    def _request_gemini(self, prompt: str) -> str:
+        """Generate JSON through the official google-genai SDK."""
+        try:
+            from google import genai
+        except ImportError as exc:
+            raise ScenarioGenerationError(
+                "Gemini requires google-genai. Run: pip install google-genai"
+            ) from exc
+
+        api_key = str(
+            self._setting("api_key", default=os.getenv("GEMINI_API_KEY", ""))
+            or os.getenv("GOOGLE_API_KEY", "")
+        ).strip()
+        if not api_key:
+            raise ScenarioGenerationError(
+                "GEMINI_API_KEY (or GOOGLE_API_KEY) is not configured"
+            )
+
+        try:
+            client = genai.Client(api_key=api_key)
+            response = client.models.generate_content(
+                model=self.model,
+                contents=prompt,
+                config={
+                    "temperature": 0.7,
+                    "response_mime_type": "application/json",
+                },
+            )
+            content = getattr(response, "text", None)
+        except Exception as exc:
+            raise ScenarioGenerationError(f"Gemini request failed: {exc}") from exc
+        if not content or not str(content).strip():
+            raise ScenarioGenerationError("Gemini returned an empty response")
+        return str(content)
+
     def _create_client(self) -> ChatClient:
         try:
             from openai import OpenAI
@@ -269,12 +324,16 @@ Keep character names, appearance, personality, and continuity notes consistent i
             raise ScenarioGenerationError(
                 "Install the 'openai' package or inject an OpenAI-compatible client"
             ) from exc
-        api_key = os.getenv("OPENAI_API_KEY", "").strip()
+        api_key = str(
+            self._setting("api_key", default=os.getenv("OPENAI_API_KEY", ""))
+        ).strip()
         if not api_key:
             raise ScenarioGenerationError(
                 "OPENAI_API_KEY is not configured and no client was injected"
             )
-        base_url = os.getenv("OPENAI_BASE_URL", "").strip() or None
+        base_url = str(
+            self._setting("base_url", default=os.getenv("OPENAI_BASE_URL", ""))
+        ).strip() or None
         return OpenAI(api_key=api_key, base_url=base_url)
 
     @staticmethod
@@ -298,7 +357,13 @@ Keep character names, appearance, personality, and continuity notes consistent i
         if self.config is None:
             return default
         if isinstance(self.config, Mapping):
-            for section in ("scenario", "app", "video_generation", "character_manager"):
+            for section in (
+                "scenario",
+                "llm",
+                "app",
+                "video_generation",
+                "character_manager",
+            ):
                 section_data = self.config.get(section)
                 if isinstance(section_data, Mapping) and key in section_data:
                     return section_data[key]
@@ -306,6 +371,16 @@ Keep character names, appearance, personality, and continuity notes consistent i
         value = getattr(self.config, key, None)
         if value is not None:
             return value
+        for section_name in (
+            "scenario",
+            "llm",
+            "app",
+            "video_generation",
+            "character_manager",
+        ):
+            section = getattr(self.config, section_name, None)
+            if isinstance(section, Mapping) and key in section:
+                return section[key]
         data = getattr(self.config, "_config", None)
         if isinstance(data, Mapping):
             return MovieScenarioGenerator(data)._setting(key, default)
