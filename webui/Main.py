@@ -18,10 +18,7 @@ from uuid import UUID, uuid4
 import requests
 import streamlit as st
 from loguru import logger
-try:
-    from streamlit_tour import Tour
-except ImportError:  # Optional UI enhancement; the editor remains usable without it.
-    Tour = None
+Tour = None
 
 # WebUI 作为独立入口运行时，需要让项目根目录优先于第三方依赖，
 # 避免依赖中的同名 app 包遮蔽 Turbo ElSayed 自己的 app 包。
