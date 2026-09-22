@@ -1,6 +1,13 @@
 # Keep legacy pip install support; primary deps moved to pyproject.toml / uv.lock.
 moviepy==2.2.1
 streamlit==1.59.1
+pydantic>=2.12.5,<3.0.0
+tomli-w==1.2.0
+tomli==2.2.1
+toml==0.10.2
+numpy==2.2.6
+Pillow==11.3.0
+imageio-ffmpeg==0.6.0
 edge_tts==7.2.7
 fastapi==0.136.3
 uvicorn==0.32.1
@@ -19,3 +26,4 @@ socksio==1.0.0
 pydub==0.25.1
 audioop-lts==0.2.2; python_version >= "3.13"
 litellm==1.86.2
+twelvelabs>=1.2.8
