@@ -1,6 +1,6 @@
 # مراجعة شاملة لمستودع Turbo ElSayed
 
-**المستودع:** `semoozaher-wq/Turbo-ElSayed`
+**المستودع:** `YOUR-GITHUB-USERNAME/Turbo-ElSayed`
 **الالتزام المفحوص:** `964aeb4` على الفرع `main`
 **تاريخ المراجعة:** 2026-09-25
 **النطاق:** 17,611 سطر Python (app + cli.py + webui/Main.py)، ملفات النشر، التبعيات، الاختبارات، التوثيق.
@@ -63,7 +63,7 @@
 **الإصلاح:** تجاوزات `MPT_LISTEN_HOST` / `MPT_LISTEN_PORT` / `MPT_LOG_LEVEL` مع تحذير عند الربط على كل الواجهات.
 
 ### 3.7 منخفضة — `README.md` مقطوع ومستودع غير موجود
-الملف ينتهي في منتصف كتلة كود بلا إغلاق، ويشير إلى `semoozaher-wq/printer-turbo` وهو **غير موجود** (الصحيح `Turbo-ElSayed`).
+الملف ينتهي في منتصف كتلة كود بلا إغلاق، ويشير إلى `YOUR-GITHUB-USERNAME/Turbo-ElSayed` وهو **غير موجود** (الصحيح `Turbo-ElSayed`).
 **الإصلاح:** أُعيد كتابة الملف كاملًا بروابط صحيحة.
 
 ### 3.8 منخفضة — ملفات مفقودة تمامًا
@@ -105,7 +105,7 @@
 
 ## 5. طريقة التشغيل
 ```bash
-git clone https://github.com/semoozaher-wq/Turbo-ElSayed.git
+git clone https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed.git
 cd Turbo-ElSayed
 cp config.example.toml config.toml     # ثم املأ المفاتيح محليًا
 pip install uv && uv sync              # أو: pip install -r requirements.txt

@@ -28,7 +28,7 @@
 ## 🚀 التشغيل السريع
 
 ```bash
-git clone https://github.com/semoozaher-wq/Turbo-ElSayed.git
+git clone https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed.git
 cd Turbo-ElSayed
 
 # الأسلوب المُوصى به (نسخة مثبّتة بالكامل)

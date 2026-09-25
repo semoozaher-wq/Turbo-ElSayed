@@ -6,15 +6,15 @@
 
 動画の<b>テーマ</b>または<b>キーワード</b>を指定するだけで、Turbo ElSayed が台本の生成、素材のマッチング、字幕と BGM の作成を行い、高画質のショート動画を出力します。
 
-[![Version](https://img.shields.io/github/v/release/semoozaher-wq/Turbo-ElSayed?color=blue&label=version)](https://github.com/semoozaher-wq/Turbo-ElSayed/releases)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/semoozaher-wq/Turbo-ElSayed/releases/latest)
+[![Version](https://img.shields.io/github/v/release/YOUR-GITHUB-USERNAME/Turbo-ElSayed?color=blue&label=version)](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/releases)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/releases/latest)
 [![Python](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Downloads](https://img.shields.io/github/downloads/semoozaher-wq/Turbo-ElSayed/total)](https://github.com/semoozaher-wq/Turbo-ElSayed/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/YOUR-GITHUB-USERNAME/Turbo-ElSayed/total)](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/releases/latest)
 
 <a href="https://trendshift.io/repositories/8731" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8731" alt="harry0703%2FTurbo ElSayed | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-<a href="https://www.star-history.com/semoozaher-wq/Turbo-ElSayed"><img src="https://api.star-history.com/badge?repo=semoozaher-wq/Turbo-ElSayed" alt="Star History Rank" style="height: 55px;" height="55"/></a>
+<a href="https://www.star-history.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed"><img src="https://api.star-history.com/badge?repo=YOUR-GITHUB-USERNAME/Turbo-ElSayed" alt="Star History Rank" style="height: 55px;" height="55"/></a>
 
-日本語 | [English](README-en.md) | [简体中文](README.md) | [リリース](https://github.com/semoozaher-wq/Turbo-ElSayed/releases) | [Issues](https://github.com/semoozaher-wq/Turbo-ElSayed/issues)
+日本語 | [English](README-en.md) | [简体中文](README.md) | [リリース](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/releases) | [Issues](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/issues)
 
 </div>
 
@@ -250,7 +250,7 @@
 お使いの AI エージェントが Skill ドキュメントを読み、ローカルのターミナルを操作できるなら、以下のプロンプトを送ってください。エージェントが Turbo ElSayed のインストールと設定を行い、動画を生成して、動画ファイルのパスを返します。未設定の必須 API キーだけを尋ねてきます。このワークフローは現在 macOS と Windows に対応しています。
 
 ```text
-Use this Skill: https://raw.githubusercontent.com/semoozaher-wq/Turbo-ElSayed/main/docs/skill/SKILL.md
+Use this Skill: https://raw.githubusercontent.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/main/docs/skill/SKILL.md
 Create a video with the topic "How AI is changing everyday life."
 ```
 
@@ -258,13 +258,13 @@ Create a video with the topic "How AI is changing everyday life."
 
 ローカル環境を用意せずに Turbo ElSayed を試したいですか？ Google Colab で直接実行できます！
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/semoozaher-wq/Turbo-ElSayed/blob/main/docs/MoneyPrinterTurbo.ipynb)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/YOUR-GITHUB-USERNAME/Turbo-ElSayed/blob/main/docs/MoneyPrinterTurbo.ipynb)
 
 ### Windows
 
 GitHub Releases から最新の Windows 用ワンクリックパッケージをダウンロードし、そのまま展開してください。
 
-- [最新の Windows 用ワンクリックパッケージをダウンロード](https://github.com/semoozaher-wq/Turbo-ElSayed/releases/latest)
+- [最新の Windows 用ワンクリックパッケージをダウンロード](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/releases/latest)
 
 ダウンロード後は、まず `update.bat` を**ダブルクリック**して**最新のコード**に更新し、その後 `start.bat` をダブルクリックして起動することを推奨します
 
@@ -284,7 +284,7 @@ GitHub Releases から最新の Windows 用ワンクリックパッケージを�
 #### ① プロジェクトをクローンする
 
 ```shell
-git clone https://github.com/semoozaher-wq/Turbo-ElSayed.git
+git clone https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed.git
 ```
 
 #### ② 初期設定を行う
@@ -306,7 +306,7 @@ cd Turbo ElSayed
 docker compose -f docker-compose.release.yml up
 ```
 
-> 既定では `docker-compose.release.yml` を推奨します。GitHub Container Registry からビルド済みイメージ `ghcr.io/semoozaher-wq/Turbo-ElSayed:latest` を取得します。
+> 既定では `docker-compose.release.yml` を推奨します。GitHub Container Registry からビルド済みイメージ `ghcr.io/YOUR-GITHUB-USERNAME/Turbo-ElSayed:latest` を取得します。
 > ローカルでイメージをビルドする必要がある場合は、これまでどおり `docker compose up` を実行できます。
 > 初回起動の前に、`config.example.toml` を `config.toml` にコピーしておくと、コンテナにマウントされます。
 
@@ -327,7 +327,7 @@ docker compose -f docker-compose.release.yml up
 [uv](https://docs.astral.sh/uv/) を使って Python 環境と依存関係を管理します。本プロジェクトは Python 3.11 以降に対応しており、以下の例では Python 3.11 を使用します。
 
 ```shell
-git clone https://github.com/semoozaher-wq/Turbo-ElSayed.git
+git clone https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed.git
 cd Turbo ElSayed
 uv python install 3.11
 uv sync --frozen
@@ -530,7 +530,7 @@ Trying to load the model directly from the local cache, if it exists.
 
 ## フィードバックと提案 📢
 
-- [issue](https://github.com/semoozaher-wq/Turbo-ElSayed/issues) または [pull request](https://github.com/semoozaher-wq/Turbo-ElSayed/pulls) を送っていただけます。
+- [issue](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/issues) または [pull request](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/pulls) を送っていただけます。
 
 ## ライセンス 📝
 

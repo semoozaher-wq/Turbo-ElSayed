@@ -6,15 +6,15 @@
 
 Provide a video <b>topic</b> or <b>keyword</b>, and Turbo ElSayed will generate the script, match footage, create subtitles and background music, and produce an HD short video.
 
-[![Version](https://img.shields.io/github/v/release/semoozaher-wq/Turbo-ElSayed?color=blue&label=version)](https://github.com/semoozaher-wq/Turbo-ElSayed/releases)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/semoozaher-wq/Turbo-ElSayed/releases/latest)
+[![Version](https://img.shields.io/github/v/release/YOUR-GITHUB-USERNAME/Turbo-ElSayed?color=blue&label=version)](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/releases)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/releases/latest)
 [![Python](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Downloads](https://img.shields.io/github/downloads/semoozaher-wq/Turbo-ElSayed/total)](https://github.com/semoozaher-wq/Turbo-ElSayed/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/YOUR-GITHUB-USERNAME/Turbo-ElSayed/total)](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/releases/latest)
 
 <a href="https://trendshift.io/repositories/8731" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8731" alt="harry0703%2FTurbo ElSayed | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-<a href="https://www.star-history.com/semoozaher-wq/Turbo-ElSayed"><img src="https://api.star-history.com/badge?repo=semoozaher-wq/Turbo-ElSayed" alt="Star History Rank" style="height: 55px;" height="55"/></a>
+<a href="https://www.star-history.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed"><img src="https://api.star-history.com/badge?repo=YOUR-GITHUB-USERNAME/Turbo-ElSayed" alt="Star History Rank" style="height: 55px;" height="55"/></a>
 
-English | [简体中文](README.md) | [日本語](README-ja.md) | [Releases](https://github.com/semoozaher-wq/Turbo-ElSayed/releases) | [Issues](https://github.com/semoozaher-wq/Turbo-ElSayed/issues)
+English | [简体中文](README.md) | [日本語](README-ja.md) | [Releases](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/releases) | [Issues](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/issues)
 
 </div>
 
@@ -271,7 +271,7 @@ All examples below were generated with Turbo ElSayed.
 If your AI Agent can read Skill documents and operate a local terminal, send it the prompt below. The Agent will install and configure Turbo ElSayed, generate the video, and return the video file path. It will ask only for required API keys that are not already configured. This workflow currently supports macOS and Windows.
 
 ```text
-Use this Skill: https://raw.githubusercontent.com/semoozaher-wq/Turbo-ElSayed/main/docs/skill/SKILL.md
+Use this Skill: https://raw.githubusercontent.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/main/docs/skill/SKILL.md
 Create a video with the topic "How AI is changing everyday life."
 ```
 
@@ -279,13 +279,13 @@ Create a video with the topic "How AI is changing everyday life."
 
 Want to try Turbo ElSayed without setting up a local environment? Run it directly in Google Colab!
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/semoozaher-wq/Turbo-ElSayed/blob/main/docs/MoneyPrinterTurbo.ipynb)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/YOUR-GITHUB-USERNAME/Turbo-ElSayed/blob/main/docs/MoneyPrinterTurbo.ipynb)
 
 ### Windows
 
 Download the latest Windows one-click package from GitHub Releases, then extract it directly.
 
-- [Download the latest Windows one-click package](https://github.com/semoozaher-wq/Turbo-ElSayed/releases/latest)
+- [Download the latest Windows one-click package](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/releases/latest)
 
 After downloading, it is recommended to **double-click** `update.bat` first to update to the **latest code**, then double-click `start.bat` to launch
 
@@ -305,7 +305,7 @@ Use the local setup or Docker instructions below.
 #### ① Clone the Project
 
 ```shell
-git clone https://github.com/semoozaher-wq/Turbo-ElSayed.git
+git clone https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed.git
 ```
 
 #### ② Complete the Initial Setup
@@ -327,7 +327,7 @@ cd Turbo ElSayed
 docker compose -f docker-compose.release.yml up
 ```
 
-> The recommended default is `docker-compose.release.yml`, which pulls the prebuilt image from GitHub Container Registry: `ghcr.io/semoozaher-wq/Turbo-ElSayed:latest`.
+> The recommended default is `docker-compose.release.yml`, which pulls the prebuilt image from GitHub Container Registry: `ghcr.io/YOUR-GITHUB-USERNAME/Turbo-ElSayed:latest`.
 > If you need to build the image locally, you can still run `docker compose up`.
 > Before the first start, copy `config.example.toml` to `config.toml` so it can be mounted into the containers.
 
@@ -348,7 +348,7 @@ Open your browser and visit http://127.0.0.1:8080/docs or http://127.0.0.1:8080/
 Use [uv](https://docs.astral.sh/uv/) to manage the Python environment and dependencies. The project supports Python 3.11 or later; the example below uses Python 3.11.
 
 ```shell
-git clone https://github.com/semoozaher-wq/Turbo-ElSayed.git
+git clone https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed.git
 cd Turbo ElSayed
 uv python install 3.11
 uv sync --frozen
@@ -574,7 +574,7 @@ Solution: [See how to download the model manually from Hugging Face](#subtitle-g
 
 ## Feedback & Suggestions 📢
 
-- You can submit an [issue](https://github.com/semoozaher-wq/Turbo-ElSayed/issues) or a [pull request](https://github.com/semoozaher-wq/Turbo-ElSayed/pulls).
+- You can submit an [issue](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/issues) or a [pull request](https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/pulls).
 
 ## License 📝
 
