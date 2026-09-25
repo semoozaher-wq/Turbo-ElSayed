@@ -1,44 +1,42 @@
 # ============================================
-# MoneyPrinterTurbo - Dockerfile for Railway
+# Turbo ElSayed - production image
 # ============================================
-
 FROM python:3.11-slim
 
-# متغيرات البيئة
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     DEBIAN_FRONTEND=noninteractive \
+    PIP_NO_CACHE_DIR=1 \
     PORT=8501
 
-# مجلد العمل
 WORKDIR /app
 
-# تثبيت المكتبات الأساسية
+# ffmpeg is mandatory: every render shells out to it.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
-    git \
     curl \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# تثبيت uv (مدير الحزم السريع)
 RUN pip install --no-cache-dir uv
 
-# نسخ ملفات المشروع
 COPY pyproject.toml uv.lock ./
 COPY requirements.txt* ./
 
-# تثبيت الاعتماديات
-RUN uv sync --frozen || pip install --no-cache-dir -r requirements.txt
+# uv.lock is the source of truth; requirements.txt is the fallback.
+RUN uv sync --frozen --no-dev || pip install --no-cache-dir -r requirements.txt
 
-# نسخ باقي الملفات
 COPY . .
 
-# إنشاء مجلدات مطلوبة
-RUN mkdir -p storage resource/songs resource/fonts
+RUN mkdir -p storage output resource/songs resource/fonts tmp \
+    && useradd --uid 10001 --create-home --shell /usr/sbin/nologin appuser \
+    && chown -R appuser:appuser /app
 
-# فتح المنفذ
+USER 10001:10001
+
 EXPOSE 8501
 
-# أمر التشغيل
-CMD ["sh", "-c", "uv run streamlit run webui/Main.py --server.port=${PORT} --server.address=0.0.0.0 --server.headless=true --browser.gatherUsageStats=false"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
+    CMD curl -fsS "http://127.0.0.1:${PORT}/ping" || exit 1
+
+CMD ["sh", "-c", "uv run uvicorn app.asgi:app --host 0.0.0.0 --port ${PORT} --log-level warning"]

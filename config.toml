@@ -1,9 +1,3 @@
-# Turbo ElSayed - standalone application configuration
-# Keep real credentials in environment variables or a private local copy.
-
-# -----------------------------------------------------------------------------
-# Application server
-# -----------------------------------------------------------------------------
 log_level = "INFO"
 listen_host = "0.0.0.0"
 listen_port = 8501
@@ -18,12 +12,13 @@ language = "ar"
 output_dir = "output"
 movie_mode = true
 api_key = ""
+video_source = "pexels"
+script_generation_backend = "local"
+llm_provider = "gemini"
+runtime_lock_test = "updated"
+match_materials_to_script = false
 
-# -----------------------------------------------------------------------------
-# Scenario generation
-# -----------------------------------------------------------------------------
 [scenario]
-# The standalone app/services/script.py reads these values.
 provider = "gemini"
 language = "ar"
 model = "gemini-2.5-flash"
@@ -35,28 +30,16 @@ scene_duration = 5
 output_dir = "output/scenarios"
 characters_file = "characters.json"
 
-# -----------------------------------------------------------------------------
-# OpenAI-compatible provider
-# Leave these empty to use OPENAI_API_KEY and OPENAI_BASE_URL instead.
-# -----------------------------------------------------------------------------
 [llm]
 provider = "gemini"
 api_key = ""
 base_url = ""
 model = "gemini-2.5-flash"
 
-# -----------------------------------------------------------------------------
-# Character continuity
-# -----------------------------------------------------------------------------
 [character_manager]
 characters_file = "characters.json"
 character_strength = 0.8
 
-# -----------------------------------------------------------------------------
-# Optional image and video generation settings
-# These values are metadata for the application; generation requires a provider
-# implementation and valid credentials.
-# -----------------------------------------------------------------------------
 [video_generation]
 image_provider = "none"
 image_api_key = ""
@@ -67,9 +50,6 @@ scene_duration = 5
 aspect_ratio = "16:9"
 resolution = "1080p"
 
-# -----------------------------------------------------------------------------
-# Optional subtitle and voice settings
-# -----------------------------------------------------------------------------
 [subtitle]
 provider = "none"
 model_size = "large-v3-turbo"
@@ -81,37 +61,69 @@ api_key = ""
 region = ""
 voice_id = ""
 
-# -----------------------------------------------------------------------------
-# Optional network/proxy settings
-# -----------------------------------------------------------------------------
 [proxy]
 enabled = false
 http = ""
 https = ""
 verify_tls = true
 
-# -----------------------------------------------------------------------------
-# Web UI preferences
-# -----------------------------------------------------------------------------
 [ui]
 language = "ar"
 hide_config = false
 show_logs = true
+hide_log = false
+video_language = ""
+paragraph_number = 1
+video_script_prompt = ""
+custom_system_prompt = ""
+video_concat_mode = "random"
+video_transition_mode = "None"
+video_aspect_local = "9:16"
+video_fit_mode = "cover"
+video_clip_duration = 3
+video_clip_speed = 1.0
+video_count = 1
+voice_mode = "tts"
+tts_server = "azure-tts-v1"
+voice_name = "en-AU-NatashaNeural-Female"
+voice_volume = 1.0
+voice_rate = 1.0
+bgm_type = "custom"
+bgm_volume = 0.2
+subtitle_enabled = true
+font_name = "MicrosoftYaHeiBold.ttc"
+subtitle_position = "bottom"
+subtitle_display_mode = "sentence"
+subtitle_animation = "none"
+text_fore_color = "#FFFFFF"
+font_size = 60
+stroke_color = "#000000"
+stroke_width = 1.5
+subtitle_background_enabled = false
+subtitle_background_color = "#000000"
+elevenlabs_music_prompt = ""
+custom_bgm_file = ""
+sonilo_bgm_prompt = ""
+video_aspect_pexels = "9:16"
 
-# -----------------------------------------------------------------------------
-# Storage
-# -----------------------------------------------------------------------------
 [storage]
 output_dir = "output"
 scenarios_dir = "output/scenarios"
 logs_dir = "output/logs"
 temporary_dir = "output/tmp"
 
-# -----------------------------------------------------------------------------
-# Environment-variable equivalents
-# -----------------------------------------------------------------------------
-# OPENAI_API_KEY=your_key_here
-# OPENAI_BASE_URL=https://api.openai.com/v1
-# SCENARIO_MODEL=gpt-4o-mini
-# SCENARIO_OUTPUT_DIR=output/scenarios
-# CHARACTERS_FILE=characters.json
+[azure]
+
+[siliconflow]
+
+[minimax_tts]
+
+[elevenlabs]
+
+[chatterbox]
+
+[kokoro]
+
+[fish_audio]
+
+[voxcpm]
