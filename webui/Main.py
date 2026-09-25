@@ -71,11 +71,11 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="auto",
     menu_items={
-        "Report a bug": "https://github.com/semoozaher-wq/Turbo-ElSayed/issues",
+        "Report a bug": "https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed/issues",
         "About": "# Turbo ElSayed\nSimply provide a topic or keyword for a video, and it will "
         "automatically generate the video copy, video materials, video subtitles, "
         "and video background music before synthesizing a high-definition short "
-        "video.\n\nhttps://github.com/semoozaher-wq/Turbo-ElSayed",
+        "video.\n\nhttps://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed",
     },
 )
 
@@ -1721,7 +1721,7 @@ def _render_brand(available_update: str | None = None):
         <h1 class="mpt-brand">
             <span class="mpt-brand__name">Turbo ElSayed</span>
             <a class="mpt-brand__version"
-               href="https://github.com/semoozaher-wq/Turbo-ElSayed"
+               href="https://github.com/YOUR-GITHUB-USERNAME/Turbo-ElSayed"
                target="_blank"
                rel="noopener noreferrer"
                aria-label="Open Turbo ElSayed on GitHub"
